@@ -6,7 +6,7 @@ img_path='./test-imgs/send_img.jpg'
 camera = PiCamera()
 camera.start_preview()
 while True:
-    camera.capture(img_path)
+    camera.capture(img_path,quality=5)
     img = open(img_path,'rb')
     files = {"image":img}
     # 访问服务
