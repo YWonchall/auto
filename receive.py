@@ -7,8 +7,10 @@ img_path = './test-imgs/receive_img.jpg'
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
+    print("1")
     img = request.files['image']
     img.save(img_path)
+    print("2")
     return "sucess!"
 
 if __name__ == '__main__':
