@@ -31,6 +31,7 @@ try:
     # 将终端设备设置为非阻塞模式
     old = set_non_blocking(fd)
     # 循环读取键盘输入并控制电机
+    crt_dir = 'w'
     while True:
         # 等待用户输入
         r, w, e = select.select([fd], [], [], 0.1)
@@ -40,18 +41,36 @@ try:
             key = sys.stdin.read(1)
             print(key)
             if key == 'w':
-                pass
-                # car.MotorStop('backward')
-                # car.forward(20)
+                # pass
+                crt_dir = 'w'
+                car.forward(20)
             elif key == 's':
-                pass
-                # car.MotorStop('forward')
-                # car.backward(20)
+                # pass
+                crt_dir = 's'
+                car.backward(20)
+            elif key == 'a':
+                # pass
+                if crt_dir == 'w':
+                    car.turn(direction='left-forward')
+                elif crt_dir == 's':
+                    car.turn(direction='left-backward')
+                else:
+                    pass
+            elif key == 'd':
+                # pass
+                if crt_dir == 'w':
+                    car.turn(direction='right-forward')
+                elif crt_dir == 's':
+                    car.turn(direction='right-backward')
+                else:
+                    pass
+            elif key == 'e':
+                print("stop")
+                car.MotorStop('all')
             if key == 'q':
                 break       
         else:
-            print("stop")
-            car.MotorStop('all')
+            car.motor_stop()
         
         time.sleep(0.1)
         
@@ -60,5 +79,6 @@ finally:
     # 恢复终端设备的阻塞模式
     set_blocking(fd, old)
     # 停止电机
-    car.MotorStop('all')
+    car.motor_stop()
+    time.sleep(0.3)
     GPIO.cleanup()
